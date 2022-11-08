@@ -14,18 +14,42 @@ async function getShowsByTerm(term) {
   // ADD: Remove placeholder & make request to TVMaze search shows API.
   const url = `http://api.tvmaze.com/search/shows?q=${term}`;
   const res = await axios.get(url);
-  console.log(res);
+  //console.log(res);
   //let showObj = { id, name, summary, image }[
   //for each item in res.data, which is an array, get me the {id, name, summary, image} of each show object in res.data
   //res.data=[{showObj}, {}, {}]
-  let showsArr = res.data;
-  function makeShowObj(id, name, summary) {
-    return { id, name, summary };
+  const resultsArr = res.data;
+  let showsArr = [];
+  function makeShowObj(id, name, summary, image) {
+    return { id, name, summary, image };
   }
-  console.log(showsArr);
-  showsArr.forEach((showItem) => {
-    console.log(makeShowObj(showItem.show.id, showItem.show.name, showItem.show.summary));
+  //console.log(resultsArr);
+  resultsArr.forEach((resultItem) => {
+      if(resultItem.show.image) {
+        resultItem = makeShowObj(
+          resultItem.show.id,
+          resultItem.show.name,
+          resultItem.show.summary,
+          resultItem.show.image
+        );
+      } else {
+        resultItem.show.image = "https://tinyurl.com/tv-missing";
+        resultItem = makeShowObj(
+          resultItem.show.id,
+          resultItem.show.name,
+          resultItem.show.summary,
+          resultItem.show.image
+        );
+
+      }
+      
+      showsArr.push(resultItem);
+      //Array.from(showsArr);
+      //console.log(typeof showsArr);
+
+      return showsArr;
   });
+ 
   // return [
   //   {
   //     id: 1767,
@@ -50,14 +74,15 @@ async function getShowsByTerm(term) {
 
 function populateShows(shows) {
   $showsList.empty();
-
+  
+  console.log(typeof(shows));
   for (let show of shows) {
     const $show = $(
       `<div data-show-id="${show.id}" class="Show col-md-12 col-lg-6 mb-4">
          <div class="media">
            <img 
-              src="http://static.tvmaze.com/uploads/images/medium_portrait/160/401704.jpg" 
-              alt="Bletchly Circle San Francisco" 
+              src="${show.image}" 
+              alt="" 
               class="w-25 mr-3">
            <div class="media-body">
              <h5 class="text-primary">${show.name}</h5>
