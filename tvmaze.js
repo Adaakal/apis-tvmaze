@@ -1,9 +1,7 @@
 "use strict";
-
 const $showsList = $("#shows-list");
 const $episodesArea = $("#episodes-area");
 const $searchForm = $("#search-form");
-
 
 /** Given a search term, search for tv shows that match that query.
  *
@@ -12,29 +10,41 @@ const $searchForm = $("#search-form");
  *    (if no image URL given by API, put in a default image URL)
  */
 
-async function getShowsByTerm( /* term */) {
+async function getShowsByTerm(term) {
   // ADD: Remove placeholder & make request to TVMaze search shows API.
-
-  return [
-    {
-      id: 1767,
-      name: "The Bletchley Circle",
-      summary:
-        `<p><b>The Bletchley Circle</b> follows the journey of four ordinary 
-           women with extraordinary skills that helped to end World War II.</p>
-         <p>Set in 1952, Susan, Millie, Lucy and Jean have returned to their 
-           normal lives, modestly setting aside the part they played in 
-           producing crucial intelligence, which helped the Allies to victory 
-           and shortened the war. When Susan discovers a hidden code behind an
-           unsolved murder she is met by skepticism from the police. She 
-           quickly realises she can only begin to crack the murders and bring
-           the culprit to justice with her former friends.</p>`,
-      image:
-          "http://static.tvmaze.com/uploads/images/medium_portrait/147/369403.jpg"
-    }
-  ]
+  const url = `http://api.tvmaze.com/search/shows?q=${term}`;
+  const res = await axios.get(url);
+  console.log(res);
+  //let showObj = { id, name, summary, image }[
+  //for each item in res.data, which is an array, get me the {id, name, summary, image} of each show object in res.data
+  //res.data=[{showObj}, {}, {}]
+  let showsArr = res.data;
+  function makeShowObj(id, name, summary) {
+    return { id, name, summary };
+  }
+  console.log(showsArr);
+  showsArr.forEach((showItem) => {
+    console.log(makeShowObj(showItem.show.id, showItem.show.name, showItem.show.summary));
+  });
+  // return [
+  //   {
+  //     id: 1767,
+  //     name: "The Bletchley Circle",
+  //     summary:
+  //       `<p><b>The Bletchley Circle</b> follows the journey of four ordinary
+  //          women with extraordinary skills that helped to end World War II.</p>
+  //        <p>Set in 1952, Susan, Millie, Lucy and Jean have returned to their
+  //          normal lives, modestly setting aside the part they played in
+  //          producing crucial intelligence, which helped the Allies to victory
+  //          and shortened the war. When Susan discovers a hidden code behind an
+  //          unsolved murder she is met by skepticism from the police. She
+  //          quickly realises she can only begin to crack the murders and bring
+  //          the culprit to justice with her former friends.</p>`,
+  //     image:
+  //         "http://static.tvmaze.com/uploads/images/medium_portrait/147/369403.jpg"
+  //   }
+  // ]
 }
-
 
 /** Given list of shows, create markup for each and to DOM */
 
@@ -43,7 +53,7 @@ function populateShows(shows) {
 
   for (let show of shows) {
     const $show = $(
-        `<div data-show-id="${show.id}" class="Show col-md-12 col-lg-6 mb-4">
+      `<div data-show-id="${show.id}" class="Show col-md-12 col-lg-6 mb-4">
          <div class="media">
            <img 
               src="http://static.tvmaze.com/uploads/images/medium_portrait/160/401704.jpg" 
@@ -58,11 +68,12 @@ function populateShows(shows) {
            </div>
          </div>  
        </div>
-      `);
+      `
+    );
 
-    $showsList.append($show);  }
+    $showsList.append($show);
+  }
 }
-
 
 /** Handle search form submission: get shows from API and display.
  *    Hide episodes area (that only gets shown if they ask for episodes)
@@ -80,7 +91,6 @@ $searchForm.on("submit", async function (evt) {
   evt.preventDefault();
   await searchForShowAndDisplay();
 });
-
 
 /** Given a show ID, get from API and return (promise) array of episodes:
  *      { id, name, season, number }
