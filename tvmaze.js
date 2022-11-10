@@ -163,24 +163,25 @@ function populateEpisodes(episodes) {
   
 }
 
-// $episodesArea.on("click", function(e) {
-//   e.preventDefault();
-//   let showId = e.target.getAttribute("data-show-id");
-//   $episodesArea.show();
-  
-//   if(e.target.tagName === "BUTTON") {
-//     //show a list of all the episodes
-//     console.log(showId);
-//   }
-// })
+// async function searchForEpisodesAndDisplay() {
+//   const term = $("#search-query").val();
+//   const shows = await getShowsByTerm(term);
+
+//   // $episodesArea.hide();
+//   populateShows(shows);
+// }
 
 ($showsList).on("click", function(e) {
+  e.preventDefault();
   const showId = e.target
     .closest("[data-show-id]")
     .getAttribute("data-show-id");
   //console.log(showId);
-  console.log(e.target);
+  
   console.log(e.target.closest("[data-show-id]"));
   console.log(showId);
-  // console.log(e.target.parentElement.getAttribute('data-show-id'));
+  const episodesToPopulate = getEpisodesOfShow(showId);
+  console.log(episodesToPopulate);
+  
+  //populateEpisodes(episodesToPopulate);
 });
