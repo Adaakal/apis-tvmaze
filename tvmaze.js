@@ -7,21 +7,21 @@ const $searchForm = $("#search-form");
  * Element.closest() polyfill
  * https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill
  */
-if (!Element.prototype.closest) {
-	if (!Element.prototype.matches) {
-		Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
-	}
-	Element.prototype.closest = function (s) {
-		var el = this;
-		var ancestor = this;
-		if (!document.documentElement.contains(el)) return null;
-		do {
-			if (ancestor.matches(s)) return ancestor;
-			ancestor = ancestor.parentElement;
-		} while (ancestor !== null);
-		return null;
-	};
-}
+// if (!Element.prototype.closest) {
+// 	if (!Element.prototype.matches) {
+// 		Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+// 	}
+// 	Element.prototype.closest = function (s) {
+// 		var el = this;
+// 		var ancestor = this;
+// 		if (!document.documentElement.contains(el)) return null;
+// 		do {
+// 			if (ancestor.matches(s)) return ancestor;
+// 			ancestor = ancestor.parentElement;
+// 		} while (ancestor !== null);
+// 		return null;
+// 	};
+// }
 
 /** Given a search term, search for tv shows that match that query.
  *
@@ -64,7 +64,7 @@ async function getShowsByTerm(term) {
 
     showsArr.push(resultItem);
 
-    //console.log(typeof showsArr);
+    console.log(typeof showsArr);
     console.log(showsArr);
   });
   return showsArr;
@@ -140,7 +140,7 @@ async function getEpisodesOfShow(id) {
     episodesArr.push(resultItem);
   });
 
-  //console.log(typeof showsArr);
+  console.log(typeof episodesArr);
   console.log(episodesArr);
   
 
@@ -153,6 +153,7 @@ function populateEpisodes(episodes) {
   $episodesArea.empty();
 
   for (let episode of episodes) {
+    console.log(episode);
     const $episode = $(
       `<li data-episode-id="${episode.id}" class="list-group-item">${episode.name} (season ${episode.season}, number ${episode.number}</li>
       `
@@ -182,6 +183,6 @@ function populateEpisodes(episodes) {
   console.log(showId);
   const episodesToPopulate = getEpisodesOfShow(showId);
   console.log(episodesToPopulate);
-  
-  //populateEpisodes(episodesToPopulate);
+  console.log(typeof(episodesToPopulate));
+  // populateEpisodes(episodesToPopulate);
 });
