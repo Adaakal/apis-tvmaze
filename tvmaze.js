@@ -2,8 +2,26 @@
 const $showsList = $("#shows-list");
 const $episodesArea = $("#episodes-list");
 const $searchForm = $("#search-form");
-const $episodesBtn = $("#show-getEpisodes");
 
+/**
+ * Element.closest() polyfill
+ * https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill
+ */
+if (!Element.prototype.closest) {
+	if (!Element.prototype.matches) {
+		Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+	}
+	Element.prototype.closest = function (s) {
+		var el = this;
+		var ancestor = this;
+		if (!document.documentElement.contains(el)) return null;
+		do {
+			if (ancestor.matches(s)) return ancestor;
+			ancestor = ancestor.parentElement;
+		} while (ancestor !== null);
+		return null;
+	};
+}
 
 /** Given a search term, search for tv shows that match that query.
  *
@@ -69,7 +87,7 @@ function populateShows(shows) {
            <div class="media-body">
              <h5 class="text-primary">${show.name}</h5>
              <div><small>${show.summary}</small></div>
-             <button class="btn btn-outline-light btn-sm Show-getEpisodes" id=${$episodesBtn}>
+             <button class="btn btn-outline-light btn-sm Show-getEpisodes">
                Episodes
              </button>
            </div>
@@ -145,15 +163,24 @@ function populateEpisodes(episodes) {
   
 }
 
-async function searchForEpisodesAndDisplay() {
-  const showId = $(this).data("show-id");
-  const episodesList = await getEpisodesOfShow(showId);
+// $episodesArea.on("click", function(e) {
+//   e.preventDefault();
+//   let showId = e.target.getAttribute("data-show-id");
+//   $episodesArea.show();
+  
+//   if(e.target.tagName === "BUTTON") {
+//     //show a list of all the episodes
+//     console.log(showId);
+//   }
+// })
 
- 
-  populateEpisodes(episodesList);
-}
-
-$episodesBtn.on("click", function (e) {
-  e.preventDefault();
-  searchForEpisodesAndDisplay();  
+($showsList).on("click", function(e) {
+  const showId = e.target
+    .closest("[data-show-id]")
+    .getAttribute("data-show-id");
+  //console.log(showId);
+  console.log(e.target);
+  console.log(e.target.closest("[data-show-id]"));
+  console.log(showId);
+  // console.log(e.target.parentElement.getAttribute('data-show-id'));
 });
