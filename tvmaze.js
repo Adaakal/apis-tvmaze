@@ -22,7 +22,9 @@ const $episodesListSection = $("#episodes-list");
 // 		return null;
 // 	};
 // }
-
+function makeCard(id, name, ...props) { 
+    return { id, name, ...props };    
+}
 /** Given a search term, search for tv shows that match that query.
  *
  *  Returns (promise) array of show objects: [show, show, ...].
@@ -34,7 +36,7 @@ async function getShowsByTerm(term) {
   // ADD: Remove placeholder & make request to TVMaze search shows API.
   const url = `http://api.tvmaze.com/search/shows?q=${term}`;
   const res = await axios.get(url);
-  
+
   const resultsArr = res.data;
   let showsArr = [];
   function makeShowObj(id, name, summary, image) {
@@ -60,10 +62,8 @@ async function getShowsByTerm(term) {
     }
 
     showsArr.push(resultItem);
-
   });
   return showsArr;
-  
 }
 
 /** Given list of shows, create markup for each and to DOM */
@@ -127,13 +127,18 @@ async function getEpisodesOfShow(id) {
   }
 
   resultsArr.forEach((resultItem) => {
-    makeEpidsodesObj(
+    // makeEpidsodesObj(
+    //   resultItem.id,
+    //   resultItem.name,
+    //   resultItem.season,
+    //   resultItem.number
+    // );
+    episodesArr.push(makeCard(
       resultItem.id,
       resultItem.name,
       resultItem.season,
       resultItem.number
-    );
-    episodesArr.push(resultItem);
+    ));
   });
 
   return episodesArr;
