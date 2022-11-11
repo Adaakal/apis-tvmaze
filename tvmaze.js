@@ -152,7 +152,7 @@ async function populateEpisodes(episodes) {
   let $episodesList = await episodes;
   for (let episode of $episodesList) {
     const $episode = $(
-      `<li data-episode-id="${episode.id}" class="list-group-item">${episode.name} (season ${episode.season}, number ${episode.number})</li>
+      `<li data-episode-id="${episode.id}" class="list-group-item">Episode Title: ${episode.name} (Season - ${episode[0]}, Number - ${episode[1]})</li>
       `
     );
 
