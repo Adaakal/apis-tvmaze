@@ -1,0 +1,48 @@
+// Google Fonts
+// @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300&display=swap");
+
+// Font Variables
+$font-stack: Montserrat, sans-serif;
+$primary-color: rgb(8, 83, 86);
+$btn-primary-background-color: adjust-color(
+    $color: $primary-color, 
+    $hue: 10, $saturation: 15%, 
+    $lightness: 5%, 
+    $alpha: 1.0
+);
+$btn-primary-border-color: adjust-color(
+    $color: $primary-color, 
+    $hue: 10, $saturation: 5%, 
+    $lightness: 10%, 
+    $alpha: .6
+);
+
+h1 {
+    
+}
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
+
+form {
+  .btn {
+    border-radius: 1.3rem;
+    margin-top: 1.2rem;
+    background-color: $btn-primary-background-color;
+    border-color: $btn-primary-border-color;
+    border-width: .2rem;
+  }
+}
+
+
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    
+    li {
+        display: inline-flex;
+    }
+}

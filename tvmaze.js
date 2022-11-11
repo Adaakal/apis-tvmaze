@@ -38,12 +38,28 @@ async function getShowsByTerm(term) {
   const res = await axios.get(url);
 
   const resultsArr = res.data;
+  console.log(res.data);
   let showsArr = [];
   function makeShowObj(id, name, summary, image) {
     return { id, name, summary, image };
   }
   
   resultsArr.forEach((resultItem) => {
+    // if (resultItem.show.image) {
+    //   resultItem = makeCard(
+    //     resultItem.show.id,
+    //     resultItem.show.name,
+    //     resultItem.show.summary,
+    //     resultItem.show.image.medium);
+    // } else {
+    //   resultItem.show.image = "https://tinyurl.com/tv-missing";
+    //   resultItem = makeCard(
+    //       resultItem.show.id,
+    //       resultItem.show.name,
+    //       resultItem.show.summary,
+    //       resultItem.show.image
+    //     );  
+    // }
     if (resultItem.show.image) {
       resultItem = makeShowObj(
         resultItem.show.id,
@@ -51,6 +67,7 @@ async function getShowsByTerm(term) {
         resultItem.show.summary,
         resultItem.show.image.medium
       );
+      
     } else {
       resultItem.show.image = "https://tinyurl.com/tv-missing";
       resultItem = makeShowObj(
@@ -80,9 +97,9 @@ function populateShows(shows) {
               alt="${show.name}" 
               class="w-25 mr-3">
            <div class="media-body">
-             <h5 class="text-primary">${show.name}</h5>
+             <h5 class="fw-bolder">${show.name}</h5>
              <div><small>${show.summary}</small></div>
-             <button class="btn btn-outline-light btn-sm Show-getEpisodes">
+             <button class="btn btn-info btn-sm Show-getEpisodes">
                Episodes
              </button>
            </div>
@@ -122,17 +139,9 @@ async function getEpisodesOfShow(id) {
   const res = await axios.get(url);
   const resultsArr = res.data;
   let episodesArr = [];
-  function makeEpidsodesObj(id, name, season, number) {
-    return { id, name, season, number };
-  }
+  
 
   resultsArr.forEach((resultItem) => {
-    // makeEpidsodesObj(
-    //   resultItem.id,
-    //   resultItem.name,
-    //   resultItem.season,
-    //   resultItem.number
-    // );
     episodesArr.push(makeCard(
       resultItem.id,
       resultItem.name,
@@ -162,40 +171,18 @@ async function populateEpisodes(episodes) {
   $episodesArea.parent().css("display", "contents");
 }
 
-// async function populateEpisodes(episodes) {
-//   console.log("EPISODESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", await episodes);
-//   $episodesArea.empty();
-//   let newList = await episodes;
-//   for (let episode of newList) {
-//     // console.log(episode[0]);
-//     const $episode = $(
-//       `<li data-episode-id="${episode.id}" class="list-group-item">${episode.name} (season ${episode.season}, number ${episode.number}</li>
-// `
-//     );
-
-//     $episodesArea.append($episode);
-//   }
-// }
-
-// async function searchForEpisodesAndDisplay() {
-//   const term = $("#search-query").val();
-//   const shows = await getShowsByTerm(term);
-
-//   // $episodesArea.hide();
-//   populateShows(shows);
-// }
 
 ($showsList).on("click", function(e) {
   e.preventDefault();
   const showId = e.target
     .closest("[data-show-id]")
     .getAttribute("data-show-id");
-  //console.log(showId);
-  
-  console.log(e.target.closest("[data-show-id]"));
   console.log(showId);
+  
   const episodesToPopulate = getEpisodesOfShow(showId);
-  console.log(episodesToPopulate);
-  console.log(typeof(episodesToPopulate));
+  // console.log(episodesToPopulate);
+  // console.log(typeof(episodesToPopulate));
   populateEpisodes(episodesToPopulate);
+
+  
 });

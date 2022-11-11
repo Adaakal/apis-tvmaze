@@ -1,0 +1,23 @@
+body {
+  font: 100% Montserrat, sans-serif;
+  color: #085356;
+}
+
+form .btn {
+  border-radius: 1.3rem;
+  margin-top: 1.2rem;
+  background-color: #015e76;
+  border-color: #096e88;
+  border-width: 0.2rem;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+ul li {
+  display: inline-flex;
+}
+
+/*# sourceMappingURL=tvmaze.css.map */
