@@ -2,7 +2,7 @@
 const $showsList = $("#shows-list");
 const $episodesArea = $("#episodes-list");
 const $searchForm = $("#search-form");
-
+const $episodesListSection = $("#episodes-list");
 /**
  * Element.closest() polyfill
  * https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill
@@ -34,16 +34,13 @@ async function getShowsByTerm(term) {
   // ADD: Remove placeholder & make request to TVMaze search shows API.
   const url = `http://api.tvmaze.com/search/shows?q=${term}`;
   const res = await axios.get(url);
-  //console.log(res);
-  //let showObj = { id, name, summary, image }[
-  //for each item in res.data, which is an array, get me the {id, name, summary, image} of each show object in res.data
-  //res.data=[{showObj}, {}, {}]
+  
   const resultsArr = res.data;
   let showsArr = [];
   function makeShowObj(id, name, summary, image) {
     return { id, name, summary, image };
   }
-  //console.log(resultsArr);
+  
   resultsArr.forEach((resultItem) => {
     if (resultItem.show.image) {
       resultItem = makeShowObj(
@@ -64,8 +61,6 @@ async function getShowsByTerm(term) {
 
     showsArr.push(resultItem);
 
-    console.log(typeof showsArr);
-    console.log(showsArr);
   });
   return showsArr;
   
@@ -108,7 +103,6 @@ async function searchForShowAndDisplay() {
   const term = $("#search-query").val();
   const shows = await getShowsByTerm(term);
 
-  // $episodesArea.hide();
   populateShows(shows);
 }
 
@@ -140,10 +134,6 @@ async function getEpisodesOfShow(id) {
     episodesArr.push(resultItem);
   });
 
-  console.log(typeof episodesArr);
-  console.log(episodesArr);
-  
-
   return episodesArr;
 }
 
@@ -159,9 +149,10 @@ async function populateEpisodes(episodes) {
       `
     );
 
-    $episodesArea.append($episode);
+    // $episodesArea.append($episode);
+    $episodesListSection.append($episode);
   }
-  
+  $episodesArea.parent().css("display", "contents");
 }
 
 // async function populateEpisodes(episodes) {
