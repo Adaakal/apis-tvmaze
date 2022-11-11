@@ -149,13 +149,13 @@ async function getEpisodesOfShow(id) {
 
 /** Write a clear docstring for this function... */
 
-function populateEpisodes(episodes) {
+async function populateEpisodes(episodes) {
   $episodesArea.empty();
-
-  for (let episode of episodes) {
-    console.log(episode);
+  console.log("EPISODES", await episodes);
+  let $episodesList = await episodes;
+  for (let episode of $episodesList) {
     const $episode = $(
-      `<li data-episode-id="${episode.id}" class="list-group-item">${episode.name} (season ${episode.season}, number ${episode.number}</li>
+      `<li data-episode-id="${episode.id}" class="list-group-item">${episode.name} (season ${episode.season}, number ${episode.number})</li>
       `
     );
 
@@ -163,6 +163,21 @@ function populateEpisodes(episodes) {
   }
   
 }
+
+// async function populateEpisodes(episodes) {
+//   console.log("EPISODESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", await episodes);
+//   $episodesArea.empty();
+//   let newList = await episodes;
+//   for (let episode of newList) {
+//     // console.log(episode[0]);
+//     const $episode = $(
+//       `<li data-episode-id="${episode.id}" class="list-group-item">${episode.name} (season ${episode.season}, number ${episode.number}</li>
+// `
+//     );
+
+//     $episodesArea.append($episode);
+//   }
+// }
 
 // async function searchForEpisodesAndDisplay() {
 //   const term = $("#search-query").val();
@@ -184,5 +199,5 @@ function populateEpisodes(episodes) {
   const episodesToPopulate = getEpisodesOfShow(showId);
   console.log(episodesToPopulate);
   console.log(typeof(episodesToPopulate));
-  // populateEpisodes(episodesToPopulate);
+  populateEpisodes(episodesToPopulate);
 });

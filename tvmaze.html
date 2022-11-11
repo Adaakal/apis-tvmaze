@@ -4,6 +4,8 @@
     <title>TV Maze</title>
     <link rel="stylesheet"
       href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="tvmaze.css" />
+
   </head>
   <body>
     <div class="container">
@@ -12,7 +14,7 @@
 
     <form class="form-inline" id="search-form">
       <input class="form-control" id="search-query" value="">
-      <button class="btn btn-primary" type="submit">Go!</button>
+      <button class="btn btn-primary btn-block btn-lg" type="submit">Go!</button>
     </form>
 
     <div class="row mt-3" id="shows-list">
@@ -23,9 +25,11 @@
       <ul id="episodes-list">
       </ul>
     </section>  
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+    <!--Bootstrap JS/Popper Bundle-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <!--jQuery-->
     <script src="http://unpkg.com/jquery"></script>
+    <!--Axios-->
     <script src="http://unpkg.com/axios/dist/axios.js"></script>
     
     <script src="tvmaze.js"></script>
