@@ -104,11 +104,13 @@ async function searchForShowAndDisplay() {
   const shows = await getShowsByTerm(term);
 
   populateShows(shows);
+  
 }
 
 $searchForm.on("submit", async function (evt) {
   evt.preventDefault();
   await searchForShowAndDisplay();
+  $searchForm.trigger("reset");
 });
 
 /** Given a show ID, get from API and return (promise) array of episodes:
