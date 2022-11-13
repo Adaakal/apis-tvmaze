@@ -182,6 +182,10 @@ async function populateEpisodes(episodes) {
   const episodesToPopulate = getEpisodesOfShow(showId);
   // console.log(episodesToPopulate);
   // console.log(typeof(episodesToPopulate));
+  // $("html, body").scrollTop(3600); // <-- Also integer can be used
+  
+  this.scrollIntoView(false); 
+  
   populateEpisodes(episodesToPopulate);
 
   
