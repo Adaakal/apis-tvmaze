@@ -22,8 +22,8 @@ const $episodesListSection = $("#episodes-list");
 // 		return null;
 // 	};
 // }
-function makeCard(id, name, ...props) { 
-    return { id, name, ...props };    
+function makeCard(id, name, ...props) {
+  return { id, name, ...props };
 }
 /** Given a search term, search for tv shows that match that query.
  *
@@ -43,7 +43,7 @@ async function getShowsByTerm(term) {
   function makeShowObj(id, name, summary, image) {
     return { id, name, summary, image };
   }
-  
+
   resultsArr.forEach((resultItem) => {
     // if (resultItem.show.image) {
     //   resultItem = makeCard(
@@ -58,7 +58,7 @@ async function getShowsByTerm(term) {
     //       resultItem.show.name,
     //       resultItem.show.summary,
     //       resultItem.show.image
-    //     );  
+    //     );
     // }
     if (resultItem.show.image) {
       resultItem = makeShowObj(
@@ -67,7 +67,6 @@ async function getShowsByTerm(term) {
         resultItem.show.summary,
         resultItem.show.image.medium
       );
-      
     } else {
       resultItem.show.image = "https://tinyurl.com/tv-missing";
       resultItem = makeShowObj(
@@ -90,20 +89,21 @@ function populateShows(shows) {
 
   for (let show of shows) {
     const $show = $(
-      `<div data-show-id="${show.id}" class="Show col-md-12 col-lg-6 mb-4">
-         <div class="media">
-           <img 
-              src="${show.image}" 
-              alt="${show.name}" 
-              class="w-25 mr-3">
-           <div class="media-body">
-             <h5 class="fw-bolder">${show.name}</h5>
-             <div><small>${show.summary}</small></div>
-             <button class="btn btn-info btn-sm Show-getEpisodes">
-               Episodes
-             </button>
-           </div>
-         </div>  
+      `<div data-show-id="${show.id}" class="Show card col-lg-6">
+        <div class="media">
+            
+          <img 
+            src="${show.image}" 
+            alt="${show.name}" 
+            class="img-fluid rounded">
+          <div class="media-body">
+            <h5 class="fw-bolder">${show.name}</h5>
+            <div class="info"><small>${show.summary}</small></div>
+            <button class="btn btn-info btn-sm Show-getEpisodes">
+              Episodes
+            </button>
+          </div>
+        </div>  
        </div>
       `
     );
@@ -121,7 +121,6 @@ async function searchForShowAndDisplay() {
   const shows = await getShowsByTerm(term);
 
   populateShows(shows);
-  
 }
 
 $searchForm.on("submit", async function (evt) {
@@ -139,15 +138,16 @@ async function getEpisodesOfShow(id) {
   const res = await axios.get(url);
   const resultsArr = res.data;
   let episodesArr = [];
-  
 
   resultsArr.forEach((resultItem) => {
-    episodesArr.push(makeCard(
-      resultItem.id,
-      resultItem.name,
-      resultItem.season,
-      resultItem.number
-    ));
+    episodesArr.push(
+      makeCard(
+        resultItem.id,
+        resultItem.name,
+        resultItem.season,
+        resultItem.number
+      )
+    );
   });
 
   return episodesArr;
@@ -161,7 +161,7 @@ async function populateEpisodes(episodes) {
   let $episodesList = await episodes;
   for (let episode of $episodesList) {
     const $episode = $(
-      `<li data-episode-id="${episode.id}" class="list-group-item">Episode Title: ${episode.name} (Season - ${episode[0]}, Number - ${episode[1]})</li>
+      `<li data-episode-id="${episode.id}" class="list-group-item list-group-flush">Episode Title: ${episode.name} (Season - ${episode[0]}, Number - ${episode[1]})</li>
       `
     );
 
@@ -171,22 +171,19 @@ async function populateEpisodes(episodes) {
   $episodesArea.parent().css("display", "contents");
 }
 
-
-($showsList).on("click", function(e) {
+$showsList.on("click", function (e) {
   e.preventDefault();
   const showId = e.target
     .closest("[data-show-id]")
     .getAttribute("data-show-id");
   console.log(showId);
-  
+
   const episodesToPopulate = getEpisodesOfShow(showId);
   // console.log(episodesToPopulate);
   // console.log(typeof(episodesToPopulate));
   // $("html, body").scrollTop(3600); // <-- Also integer can be used
-  
-  this.scrollIntoView(false); 
-  
-  populateEpisodes(episodesToPopulate);
 
-  
+  this.scrollIntoView(false);
+
+  populateEpisodes(episodesToPopulate);
 });
